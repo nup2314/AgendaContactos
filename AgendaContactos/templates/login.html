@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block titulo %}Iniciar sesión{% endblock %}
+
+{% block contenido %}
+{% from "macros.html" import icono with context %}
+<section class="tarjeta tarjeta-cuenta">
+    <h2>{{ icono('entrar') }} Iniciar sesión</h2>
+    <form method="POST">
+        <label for="usuario">{{ icono('usuario') }} Usuario</label>
+        <input type="text" id="usuario" name="usuario" required
+               maxlength="20" autocomplete="username" autofocus>
+
+        <label for="clave">{{ icono('clave') }} Contraseña</label>
+        <input type="password" id="clave" name="clave" required
+               autocomplete="current-password">
+
+        <button type="submit" class="boton-verde">{{ icono('entrar') }} Entrar</button>
+    </form>
+
+    <p class="cuenta-enlace">
+        ¿Aún no tienes cuenta?
+        <a class="boton-enlace" href="{{ url_for('registro') }}">{{ icono('registro') }} Crear cuenta</a>
+    </p>
+</section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% from "macros.html" import icono with context %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Agenda de contactos{% endblock %}</title>
+    <!-- Fuentes pixeladas (si no hay internet se usa una fuente monoespaciada) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+    <header class="encabezado">
+        <h1>{{ icono('titulo_izq') }} Libro de Aldeanos {{ icono('titulo_der') }}</h1>
+        <p>Guarda a todos tus contactos en tu mundo</p>
+        {% if session.get('usuario') %}
+        <div class="barra-usuario">
+            <span>{{ icono('usuario') }} {{ session['usuario'] }}</span>
+            <form action="{{ url_for('logout') }}" method="POST">
+                <button type="submit" class="peligro">{{ icono('salir') }} Cerrar sesión</button>
+            </form>
+        </div>
+        {% endif %}
+    </header>
+
+    <main class="contenedor">
+        {% with mensajes = get_flashed_messages() %}
+            {% if mensajes %}
+                {% for mensaje in mensajes %}
+                    <div class="mensaje">{{ icono('mensaje') }} {{ mensaje }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block contenido %}{% endblock %}
+    </main>
+
+    <footer class="pie">
+        {{ icono('pie') }} Agenda de contactos · Flask + SQLite {{ icono('pie') }}
+    </footer>
+</body>
+</html>

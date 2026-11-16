@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block titulo %}Editar contacto{% endblock %}
+
+{% block contenido %}
+{% from "macros.html" import icono with context %}
+<section class="tarjeta">
+    <h2>{{ icono('editar') }} Editar aldeano</h2>
+    <form method="POST">
+        <label>{{ icono('nombre') }} Nombre *</label>
+        <input type="text" name="nombre"
+               value="{{ contacto.nombre }}" required>
+
+        <label>{{ icono('telefono') }} Teléfono *</label>
+        <input type="text" name="telefono"
+               value="{{ contacto.telefono }}" required>
+
+        <label>{{ icono('correo') }} Correo electrónico</label>
+        <input type="email" name="correo"
+               value="{{ contacto.correo or '' }}">
+
+        <label>{{ icono('categoria') }} Categoría *</label>
+        <select name="categoria" required>
+            {% for opcion in ["Familia", "Escuela", "Trabajo", "Otro"] %}
+            <option value="{{ opcion }}"
+                {% if contacto.categoria == opcion %}selected{% endif %}>
+                {{ opcion }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="boton-verde">{{ icono('guardar') }} Guardar cambios</button>
+        <a class="boton-enlace" href="{{ url_for('inicio') }}">Cancelar</a>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,14 @@
+{# Dibuja el icono de la clave indicada.
+   Si hay un link en iconos.py usa la imagen; si no, usa el emoji. #}
+{% macro icono(clave) -%}
+    {%- set url = ICONOS.get(clave, "") | trim -%}
+    {%- if url -%}
+        {%- if url.startswith("http") or url.startswith("data:") or url.startswith("/") -%}
+            <img class="icono" src="{{ url }}" alt="">
+        {%- else -%}
+            <img class="icono" src="{{ url_for('static', filename=url) }}" alt="">
+        {%- endif -%}
+    {%- else -%}
+        <span class="icono-emoji">{{ EMOJIS.get(clave, "") }}</span>
+    {%- endif -%}
+{%- endmacro %}

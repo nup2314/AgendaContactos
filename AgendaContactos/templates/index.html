@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block titulo %}Agenda | Inicio{% endblock %}
+
+{% block contenido %}
+{% from "macros.html" import icono with context %}
+
+<section class="tarjeta">
+    <h2>{{ icono('nuevo') }} Nuevo aldeano</h2>
+    <form action="{{ url_for('agregar') }}" method="POST">
+        <label>{{ icono('nombre') }} Nombre *</label>
+        <input type="text" name="nombre" required maxlength="80">
+
+        <label>{{ icono('telefono') }} Teléfono *</label>
+        <input type="text" name="telefono" required maxlength="25">
+
+        <label>{{ icono('correo') }} Correo electrónico</label>
+        <input type="email" name="correo" maxlength="120">
+
+        <label>{{ icono('categoria') }} Categoría *</label>
+        <select name="categoria" required>
+            <option value="">Selecciona una categoría</option>
+            <option>Familia</option>
+            <option>Escuela</option>
+            <option>Trabajo</option>
+            <option>Otro</option>
+        </select>
+
+        <button type="submit" class="boton-verde">{{ icono('guardar') }} Guardar contacto</button>
+    </form>
+</section>
+
+<section class="tarjeta">
+    <h2>{{ icono('lista') }} Aldeanos registrados</h2>
+    {% if contactos %}
+    <div class="tabla-contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th><th>Teléfono</th><th>Correo</th>
+                    <th>Categoría</th><th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contacto in contactos %}
+                <tr>
+                    <td>{{ contacto.nombre }}</td>
+                    <td>{{ contacto.telefono }}</td>
+                    <td>{{ contacto.correo or "Sin correo" }}</td>
+                    <td>{{ icono('cat_' ~ contacto.categoria) }} {{ contacto.categoria }}</td>
+                    <td class="acciones">
+                        <a class="boton-enlace" href="{{ url_for('editar', id=contacto.id) }}">{{ icono('editar') }} Editar</a>
+                        <form action="{{ url_for('eliminar', id=contacto.id) }}"
+                              method="POST">
+                            <button class="peligro" type="submit"
+                                onclick="return confirm('¿Seguro que deseas eliminar este contacto?')">
+                                {{ icono('eliminar') }} Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p>{{ icono('vacio') }} Aún no hay contactos. ¡Registra el primero!</p>
+    {% endif %}
+</section>
+{% endblock %}
