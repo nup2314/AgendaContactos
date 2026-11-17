@@ -238,7 +238,7 @@ def editar(id):
 # DELETE
 @app.route("/eliminar/<int:id>", methods=["POST"])
 @login_requerido
-def eliminar(id):
+def delete(id):
     conexion = obtener_conexion()
     conexion.execute(
         "DELETE FROM contactos WHERE id = ? AND usuario_id = ?",
